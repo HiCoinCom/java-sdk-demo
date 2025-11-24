@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 同步充值记录，分两个job，此外还提供充值通知webhook接口chainup的充值通知
+ * 同步充值记录，分两个job，此外还提供充值通知webhook接收chainup的充值通知
  * job1，根据lastID分布同步记录
  * job2，定时查询未完成的充值
  */

@@ -46,7 +46,8 @@ public class WithdrawSyncTask {
                     continue;
                 }*/
 
-                /*if(dbRow.custody_id > 0) {
+            // 注意，此处会同步到custody app发起的提现，custody app发起提现没有requesitID, 
+            /*if(row.getRequestId == "") {
                     continue;
                 }*/
 
