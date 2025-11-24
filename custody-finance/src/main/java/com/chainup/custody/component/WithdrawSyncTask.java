@@ -46,7 +46,10 @@ public class WithdrawSyncTask {
                     continue;
                 }*/
 
-              
+            // 注意，此处会同步到custody app发起的提现，custody app发起提现没有requesitID, 
+            /*if(row.getRequestId == "") {
+                    continue;
+                }*/
 
             // 将数据写入数据库,注意 requestId 唯一；requestId在推送提现到ChainUp 时设置
             // update user_withdraw set custody_id=row.getId(), txid=row.getTxid, status=xxx, fee=row.getRealFee() where request_id=row.getRequestId()
