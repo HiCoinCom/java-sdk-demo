@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <property name="fileName" value="cs"/>
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <charset>utf-8</charset>
+            <pattern>%d{HH:mm:ss.SSS} |-%-5level [%thread] %logger{50}:%L - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <if condition='isDefined("filelog.enable")'>
+        <then>
+            <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+                <file>../logs/${fileName}.log</file>
+                <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                    <FileNamePattern>../logs/${fileName}.%d{yyyy-MM-dd}.%i.log.gz</FileNamePattern>
+                    <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                        <maxFileSize>10MB</maxFileSize>
+                    </timeBasedFileNamingAndTriggeringPolicy>
+                    <maxHistory>30</maxHistory>
+                </rollingPolicy>
+                <encoder>
+                    <charset>utf-8</charset>
+                    <pattern>%d{HH:mm:ss.SSS} |-%-5level [%thread] %logger{50}:%L - %msg%n</pattern>
+                </encoder>
+            </appender>
+            <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+                <appender-ref ref="FILE"/>
+            </appender>
+        </then>
+    </if>
+
+    <if condition='isDefined("filelog.enable")'>
+        <then>
+            <logger name="com.chainup" level="info"/>
+            <root level="warn">
+                <appender-ref ref="CONSOLE"/>
+                <appender-ref ref="ASYNC"/>
+            </root>
+        </then>
+        <else>
+            <logger name="com.chainup" level="info"/>
+            <root level="info">
+                <appender-ref ref="CONSOLE"/>
+            </root>
+        </else>
+    </if>
+</configuration>

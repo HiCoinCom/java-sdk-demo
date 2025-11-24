@@ -1,0 +1,29 @@
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
+.classpath
+.metadata/
+.project
+.settings/
+.idea/
+*.iml
+*.iws
+.DS_Store
+logs/
+target/
+
+# Emacs
+*~
+.#*
+
+# Omni Graffle #
+*(Autosaved).graffle
+
+Servers
+
+
+transaction-logs
+executor-logs
