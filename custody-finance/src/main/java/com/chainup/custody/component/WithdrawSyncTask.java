@@ -94,10 +94,10 @@ public class WithdrawSyncTask {
     public void scheduledTask2() {
         System.out.println("任务开始 WithdrawSyncTask2：" + LocalDateTime.now());
         // 分页未完成的提现的ID(指商户平台的ID， 非chainup平台的ID)
-        int lastId = 0;
+        int lastWithdrawId = 0;
         while (true) {
             // 查询20条未完成的提现
-            // select id from user_withdraw where status in (未完成状态1, 未完成状态2...) and id>${lastId} order by id asc limit 20;
+            // select id from user_withdraw where status in (未完成状态1, 未完成状态2...) and id>${lastWithdrawId} order by id asc limit 20;
 
             List<Integer> mockUnDoneIdList = Arrays.asList(1, 2); // 模拟查询到未完成的ID
             if (mockUnDoneIdList == null || mockUnDoneIdList.isEmpty()) {
@@ -107,6 +107,9 @@ public class WithdrawSyncTask {
             List<String> requestIdList = new ArrayList<>();
             for (Integer id : mockUnDoneIdList) {
                 requestIdList.add(getRequestId(id));
+                if (lastWithdrawId < id) {
+                    lastWithdrawId = id;
+                }
             }
 
             WithdrawRecordResult result = mpcClient.getWithdrawApi().getWithdrawRecords(requestIdList);
@@ -114,9 +117,8 @@ public class WithdrawSyncTask {
                 // 如果需要打印相应日志
                 return;
             }
-
             // 将同步的数据 更新入库，txid，状态，矿工费、custody_id等
-            lastId = syncWithdrawInfo(result);
+            syncWithdrawInfo(result);
         }
     }
 
